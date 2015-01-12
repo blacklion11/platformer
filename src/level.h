@@ -4,12 +4,15 @@
 #define BLOCK_AIR 0
 #define BLOCK_DIRT 1
 
+#include<SDL2/SDL.h>
+
 typedef struct Block 
 {
 	int size;
 	bool solid;
 	bool collidable;
-	
+	SDL_Rect rect;
+	SDL_Color color;
 }Block;
 
 typedef struct Level
