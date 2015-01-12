@@ -10,7 +10,8 @@ void initPlayer()
 	player.box.x = player.x;
 	player.box.y = player.y;
 	player.box.w = player.box.h = 50;
-
+	player.movespeed = 5;
+	player.falling = true;
 }
 
 void drawPlayer(SDL_Renderer *renderer)

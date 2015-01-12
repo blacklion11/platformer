@@ -15,12 +15,15 @@ float frameTime;
 
 void initGame()
 {
-	running = true;
-	initPlayer();
+	running = true; //sets the running boolean to true for the game loop
+	initPlayer();  //intializes the player
+	loadAssets(); // loads all the assets the game needs to run (i.e level maps, character sprites, backgrounds, etc)
+	loadLevel();
 }
 
 void runGame()
 {
+	
 	
 	while(running)
 	{
@@ -30,42 +33,40 @@ void runGame()
 		deltaTime = (currTime - prevTime) / 1000.0f;  // find the difference and divide by 1000 to get in seconds (this is the time the previous frame took to execute)
 		frameTime += deltaTime;  // this is the check for if the frame executed too fast. the delta time is added to the frame time until enough ticks have gone by to allow another update
 		
-		SDL_Log("delta time is: %f", deltaTime);
-		cout << "delta time is: " << deltaTime << endl;
+		//SDL_Log("delta time is: %f", deltaTime);
+		//cout << "delta time is: " << deltaTime << endl;
 		
 		//get input and test for game close
 		running = getInput() != -1;
 		
-		if(frameTime > 0.25f)  // if the execution time of the last frame is greater than the target fps time then execute this frame (this allows all computers to run the game at a constant speed regardless of processor speed)
+		if(frameTime > 0.0166666f)  // if the execution time of the last frame is greater than the target fps time then execute this frame (this allows all computers to run the game at a constant speed regardless of processor speed)
 		{
 			frameTime = 0; // reset the frame time
 			
 			/**
 			* Update Game Logic
 			*/
+			updateLevel();
 			
-			
-		
-			/**
-			* Render To Buffer
-			*/
-			
-			// Clear the screen
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-			SDL_RenderClear(renderer);
-			
-			// Draw background
-			
-			
-			// Draw the player
-			drawPlayer(renderer);
-			
-			/**
-			* Render To Screen
-			*/
-			SDL_RenderPresent(renderer);
-	
 		}
+		/**
+		* Render To Buffer
+		*/
+		
+		// Clear the screen
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
+		
+		// Draw background
+		
+		
+		// Draw the player
+		drawPlayer(renderer);
+		
+		/**
+		* Render To Screen
+		*/
+		SDL_RenderPresent(renderer);
 	}
 	
 }

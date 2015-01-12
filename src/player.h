@@ -8,6 +8,8 @@ typedef struct Player
 	int x;
 	int y;
 	SDL_Rect box;
+	int movespeed;
+	bool falling;
 }Player;
 
 void initPlayer();

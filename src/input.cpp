@@ -18,19 +18,19 @@ void checkKeys()
 	
 	if(left)
 	{
-		player.box.x -= 1;
+		player.box.x -= player.movespeed;
 	}
 	if(right)
 	{
-		player.box.x += 1;
+		player.box.x += player.movespeed;
 	}
 	if(up)
 	{
-		player.box.y -= 1;
+		player.box.y -= player.movespeed;
 	}
 	if(down)
 	{
-		player.box.y += 1;	
+		player.box.y += player.movespeed;	
 	}
 	
 	std::cout << "Player x: " << player.box.y << std::endl;
