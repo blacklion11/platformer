@@ -18,7 +18,7 @@ void initGame()
 	running = true; //sets the running boolean to true for the game loop
 	initPlayer();  //intializes the player
 	loadAssets(); // loads all the assets the game needs to run (i.e level maps, character sprites, backgrounds, etc)
-	loadLevel();
+	loadWorld();
 }
 
 void runGame()
@@ -58,6 +58,10 @@ void runGame()
 		SDL_RenderClear(renderer);
 		
 		// Draw background
+		
+		
+		// Draw the world
+		renderWorld(renderer);
 		
 		
 		// Draw the player

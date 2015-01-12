@@ -25,5 +25,6 @@ typedef struct Level
 
 void loadLevel();
 void updateLevel();
+void renderLevel(SDL_Renderer *);
 
 #endif

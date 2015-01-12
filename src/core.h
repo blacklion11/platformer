@@ -14,7 +14,8 @@
 #include"input.h"
 #include"player.h"
 #include"physics.h"
-#include"level.h"
+#include"world.h"
+//#include"level.h"
 
 
 void initGame();
