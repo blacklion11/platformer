@@ -41,6 +41,7 @@ void loadLevel()
 		*	Allocate memory to the block array in the level
 		*/
 		
+		/*
 		level.blocks = (Block**) malloc( level.width * sizeof(Block*));
 		for(i = 0; i < level.width; i++)
 		{
@@ -55,7 +56,20 @@ void loadLevel()
 				level.blocks[i][j] = block;
 			}
 		}
+		*/
 		
+		//level.blocks = Block[level.width][level.height];
+		Block tempBlocks[level.width][level.height];
+		level.blocks = tempBlocks;
+		for(i = 0; i < level.width; i++)
+		{
+			for(j = 0; j < level.height; j++)
+			{
+				//level.blocks[i][j] = (Block*) malloc(sizeof(Block));
+				Block block;
+				level.blocks[i][j] = block;
+			}
+		}
 		
 		
 		// these keep track of which tile we are on
@@ -75,8 +89,7 @@ void loadLevel()
 				const char *cstr = cblock.c_str();  //convert the string into a char array
 				char chartoken = *cstr;  // put that value into a standard char primitive
 				int token = ((int) chartoken) - 48 ;  // type cast to int  (the - 48 is for the integer value shift from the conversion from a char to an int.) 
-				SDL_Log("Current Block: %d", token);
-				SDL_Log("Col: %d being read", counterX);
+				SDL_Log("Col: %d being read. Current Block: %d", counterX, token);
 				switch(token)  
 				{
 					case BLOCK_AIR:
