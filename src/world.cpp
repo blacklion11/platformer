@@ -1,17 +1,17 @@
 #include"core.h"
 
 
-Level level;
+Level *level;
 
 void loadWorld()
 {
 	//load the level
-	loadLevel();
+	level = new Level();
 }
 
 void renderWorld(SDL_Renderer *renderer)
 {
 	
 	//render the level
-	renderLevel(renderer);
+	//renderLevel(renderer);
 }

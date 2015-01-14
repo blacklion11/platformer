@@ -46,7 +46,7 @@ void runGame()
 			/**
 			* Update Game Logic
 			*/
-			updateLevel();
+			//updateLevel();
 			
 		}
 		/**

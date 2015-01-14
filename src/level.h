@@ -6,25 +6,94 @@
 
 #include<SDL2/SDL.h>
 
-typedef struct Block 
+struct Block 
 {
 	int size;
 	bool solid;
 	bool collidable;
 	SDL_Rect rect;
 	SDL_Color color;
-}Block;
+};
 
+/*
 typedef struct Level
 {
 	int width;
 	int height;
 	Block **blocks;
 }Level;
+*/
 
-
-void loadLevel();
+class Level
+{
+	//struct Physics phys;
+	
+	public: 
+		int width, height;
+		struct Block **blocks;
+	
+		Level();
+	private:
+	
+	void initLevel();
+	void loadLevel();
+};
 void updateLevel();
 void renderLevel(SDL_Renderer *);
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,9 +1,9 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
-typedef struct LevelPhysics
+struct LevelPhysics
 {
 	float gravity;
-}LevelPhysics;
+};
 
 #endif
