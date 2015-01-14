@@ -1,17 +1,27 @@
-#include"core.h"
+#include"world.h"
 
 
-Level *level;
 
-void loadWorld()
+
+World::World()
+{
+	initWorld();
+	loadWorld();
+}
+
+void World::initWorld()
+{
+}
+
+void World::loadWorld()
 {
 	//load the level
 	level = new Level();
 }
 
-void renderWorld(SDL_Renderer *renderer)
+void World::renderWorld(SDL_Renderer *renderer)
 {
 	
 	//render the level
-	//renderLevel(renderer);
+	level->renderLevel(renderer);
 }

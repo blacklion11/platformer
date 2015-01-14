@@ -4,7 +4,19 @@
 #include<SDL2/SDL.h>
 #include"level.h"
 
-void loadWorld();
-void renderWorld(SDL_Renderer *);
+
+class World
+{
+	public:
+	
+	Level *level;
+	
+	// ctor
+	World();
+	
+	void initWorld();
+	void loadWorld();
+	void renderWorld(SDL_Renderer *);
+};
 
 #endif

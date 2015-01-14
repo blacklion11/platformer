@@ -1,18 +1,27 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include"core.h"
+#include<SDL2/SDL.h>
 
-typedef struct Player
+class Player
 {
+	
+	public:
+	
 	int x;
 	int y;
 	SDL_Rect box;
 	int movespeed;
 	bool falling;
-}Player;
+	
+	Player();
+	
+	void initPlayer();
+	void updatePlayer();
+	void renderPlayer(SDL_Renderer *);
 
-void initPlayer();
-void drawPlayer(SDL_Renderer *);
+
+};
+
 
 #endif

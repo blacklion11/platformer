@@ -1,40 +1,41 @@
-#include "core.h"
+#include "gamemanager.h"
 
 // SDL Event variable
 SDL_Event e;
 
-extern Player player;
+// Game manager object
+extern GameManager *gm;
+
 extern float deltaTime;
 
 bool left = false;
 bool right = false;
 bool up = false;
 bool down = false;
+bool space = false;
 
 
 
 void checkKeys()
 {
-	
 	if(left)
 	{
-		player.box.x -= player.movespeed;
+		gm->player->box.x -= gm->player->movespeed;
 	}
 	if(right)
 	{
-		player.box.x += player.movespeed;
+		gm->player->box.x += gm->player->movespeed;
 	}
 	if(up)
 	{
-		player.box.y -= player.movespeed;
+		gm->player->box.y -= gm->player->movespeed;
 	}
 	if(down)
 	{
-		player.box.y += player.movespeed;	
+		gm->player->box.y += gm->player->movespeed;	
 	}
-	
-	std::cout << "Player x: " << player.box.y << std::endl;
 }
+
 
 int getInput()
 {
@@ -88,8 +89,8 @@ int getInput()
 				if(e.button.button == SDL_BUTTON_LEFT)
 				{
 					//movePlayerXY(e.button.x, e.button.y);
-					//player.x = e.button.x - (player.w >> 1);
-					//player.y = e.button.y - (player.h >> 1);
+					//player->x = e.button.x - (player->w >> 1);
+					//player->y = e.button.y - (player->h >> 1);
 				}
 				if(e.button.button == SDL_BUTTON_RIGHT)
 				{

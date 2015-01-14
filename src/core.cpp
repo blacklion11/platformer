@@ -2,26 +2,30 @@
 
 using namespace std;
 
-bool running = false;
+//SDL variables
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
 extern SDL_Surface *screen;
 
+// Running variables
+bool running = false;
 float fps = 10.0;
 unsigned int prevTime;
 unsigned int currTime;
 float deltaTime;
 float frameTime;
 
-void initGame()
+
+GameManager *gm;
+
+
+void initCore()
 {
-	running = true; //sets the running boolean to true for the game loop
-	initPlayer();  //intializes the player
-	loadAssets(); // loads all the assets the game needs to run (i.e level maps, character sprites, backgrounds, etc)
-	loadWorld();
+	running = true;
+	gm = new GameManager();
 }
 
-void runGame()
+void runCore()
 {
 	
 	
@@ -49,33 +53,16 @@ void runGame()
 			//updateLevel();
 			
 		}
-		/**
-		* Render To Buffer
-		*/
-		
-		// Clear the screen
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
-		
-		// Draw background
-		
-		
-		// Draw the world
-		renderWorld(renderer);
-		
-		
-		// Draw the player
-		drawPlayer(renderer);
 		
 		/**
-		* Render To Screen
+		* Render the game
 		*/
-		SDL_RenderPresent(renderer);
+		gm->renderGame(renderer);
 	}
 	
 }
 
-void quitGame()
+void quitCore()
 {
 
 }

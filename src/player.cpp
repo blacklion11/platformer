@@ -1,24 +1,32 @@
 #include"player.h"
 
-Player player;
 
 
-void initPlayer()
+Player::Player()
 {
-	player.x = 50;
-	player.y = 50;
-	player.box.x = player.x;
-	player.box.y = player.y;
-	player.box.w = player.box.h = 50;
-	player.movespeed = 5;
-	player.falling = true;
+	initPlayer();
 }
 
-void drawPlayer(SDL_Renderer *renderer)
+void Player::initPlayer()
 {
-	
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_RenderFillRect(renderer, &(player.box));
+	x = 50;
+	y = 50;
+	box.x = x;
+	box.y = y;
+	box.w = box.h = 28;
+	movespeed = 5;
+	falling = true;
+}
+
+void Player::updatePlayer()
+{
+
+}
+
+void Player::renderPlayer(SDL_Renderer *renderer)
+{
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &box);
 }
 
 

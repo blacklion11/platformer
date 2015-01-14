@@ -48,9 +48,9 @@ int main(int argc, char** argv)
 	
 	initSDL();
 	
-	initGame();
-	runGame();
-	quitGame();
+	initCore();
+	runCore();
+	quitCore();
 	
 	closeSDL();
 	

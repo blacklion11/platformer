@@ -11,16 +11,13 @@
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
 
-#include"input.h"
-#include"player.h"
-#include"physics.h"
-#include"world.h"
-//#include"level.h"
+
+#include"gamemanager.h"
 
 
-void initGame();
-void runGame();
-void quitGame();
+void initCore();
+void runCore();
+void quitCore();
 
 void loadAssets();
 #endif

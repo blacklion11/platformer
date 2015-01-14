@@ -15,15 +15,6 @@ struct Block
 	SDL_Color color;
 };
 
-/*
-typedef struct Level
-{
-	int width;
-	int height;
-	Block **blocks;
-}Level;
-*/
-
 class Level
 {
 	//struct Physics phys;
@@ -33,13 +24,21 @@ class Level
 		struct Block **blocks;
 	
 		Level();
+		~Level();
+		
 	private:
 	
 	void initLevel();
 	void loadLevel();
+	void destroyLevel();
+	
+	public:
+
+	void renderLevel(SDL_Renderer *);
 };
+
+
 void updateLevel();
-void renderLevel(SDL_Renderer *);
 
 #endif
 
