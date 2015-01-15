@@ -20,19 +20,19 @@ void checkKeys()
 {
 	if(left)
 	{
-		gm->player->box.x -= gm->player->movespeed;
+		gm->player->setX(gm->player->getX() - gm->player->movespeed);
 	}
 	if(right)
 	{
-		gm->player->box.x += gm->player->movespeed;
+		gm->player->setX(gm->player->getX() + gm->player->movespeed);
 	}
 	if(up)
 	{
-		gm->player->box.y -= gm->player->movespeed;
+		gm->player->setY(gm->player->getY() - gm->player->movespeed);
 	}
 	if(down)
 	{
-		gm->player->box.y += gm->player->movespeed;	
+		gm->player->setY(gm->player->getY() + gm->player->movespeed);
 	}
 }
 
