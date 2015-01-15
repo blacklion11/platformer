@@ -4,7 +4,7 @@
 #include<SDL2/SDL.h>
 #include"entity.h"
 
-class Player: public Character, public Collidable
+class Player: public Character
 {
 	
 	public:
@@ -15,8 +15,6 @@ class Player: public Character, public Collidable
 	void initPlayer();
 	void updatePlayer();
 	void renderPlayer(SDL_Renderer *);
-	
-	bool collidesWith(GameObject *);
 	
 	void setXY(int , int);
 	void setX(int);

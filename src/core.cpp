@@ -50,7 +50,7 @@ void runCore()
 			/**
 			* Update Game Logic
 			*/
-			//updateLevel();
+			gm->updateGame();
 			
 		}
 		

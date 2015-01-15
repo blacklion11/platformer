@@ -19,6 +19,11 @@ void World::loadWorld()
 	level = new Level();
 }
 
+void World::updateWorld(Player *player)
+{
+	level->updateLevel(player);
+}
+
 void World::renderWorld(SDL_Renderer *renderer)
 {
 	

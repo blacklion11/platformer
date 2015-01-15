@@ -12,7 +12,6 @@ class Object
 	
 	SDL_Rect box;
 	
-	
 	Object();
 	~Object();
 	
@@ -34,7 +33,7 @@ class GameObject: public Object
 {
 
 	public:
-	
+
 	bool moveable;
 	bool collidable;
 	
@@ -45,17 +44,9 @@ class GameObject: public Object
 
 };
 
-class Collidable
-{
-	
-	public:
-	
-	~Collidable();
-	
-	
-	virtual bool collidesWith(GameObject *)=0;
-	
-};
+
+
+
 
 
 

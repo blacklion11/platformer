@@ -13,7 +13,3 @@ GameObject::~GameObject()
 }
 
 
-Collidable::~Collidable()
-{
-
-}

@@ -7,7 +7,7 @@ using namespace std;
 Level::Level()
 {
 	initLevel();
-	loadLevel();
+	loadBlocks();
 }
 
 //dtor
@@ -39,7 +39,7 @@ void Level::initLevel()
 	SDL_Log("Level Initialized");
 }
 
-void Level::loadLevel()
+void Level::loadBlocks()
 {	
 	//phys.gravity = 5.0f;
 	string line, cblock;  // string for reading in and storing the block ids
@@ -73,7 +73,7 @@ void Level::loadLevel()
 						// Configure the block
 						blocks[counterY][counterX].size = 32;
 						blocks[counterY][counterX].solid = false;
-						blocks[counterY][counterX].collidable = false;
+						blocks[counterY][counterX].collidable = true;
 						blocks[counterY][counterX].rect.x = counterX * blocks[counterY][counterX].size;
 						blocks[counterY][counterX].rect.y = counterY * blocks[counterY][counterX].size;
 						blocks[counterY][counterX].rect.w = blocks[counterY][counterX].size;
@@ -97,6 +97,12 @@ void Level::loadLevel()
 						blocks[counterY][counterX].color.a = 255;
 						break;
 				}
+				
+				// if the block is collidable add to collidables vector
+				if(blocks[counterY][counterX].collidable)
+				{	
+					collidables.push_back(&(blocks[counterY][counterX]));
+				}
 				counterX++;
 			}
 			counterY++;
@@ -108,8 +114,35 @@ void Level::loadLevel()
 	}
 	
 	SDL_Log("Level Loaded");
+
 }
 
+
+
+void Level::checkCollisions(Player *player)
+{
+	for(unsigned int i = 0; i < collidables.size(); i++)
+	{	
+	
+		//SDL_Log("Player Position: %d, %d              Block 1 Position: %d, %d", player->getX(), player->getY(), collidables[1]->box.x, collidables[1]->box.y);
+		//check if the player collides with any blocks
+		if(SDL_IntersectRect(&(player->box), &(collidables[i]->box), NULL) == SDL_TRUE)
+		{
+			SDL_Log("Collision");
+		}
+		else
+		{
+			//SDL_Log("No Collision");
+		}
+		
+	}
+}
+
+
+void Level::updateLevel(Player *player)
+{
+	checkCollisions(player);
+}
 
 void Level::renderLevel(SDL_Renderer *renderer)
 {

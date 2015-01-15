@@ -28,7 +28,7 @@ void GameManager::destroyGame()
 
 void GameManager::updateGame()
 {
-
+	world->updateWorld(player);
 }
 
 void GameManager::renderGame(SDL_Renderer *renderer)

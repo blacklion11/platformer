@@ -1,5 +1,7 @@
 #include"object.h"
 
+////////////////Object////////////////////////////
+
 //ctor
 Object::Object()
 {

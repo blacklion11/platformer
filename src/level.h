@@ -5,8 +5,11 @@
 #define BLOCK_DIRT 1
 
 #include<SDL2/SDL.h>
+#include<vector>
+#include"object.h"
+#include"player.h"
 
-struct Block 
+struct Block: public GameObject
 {
 	int size;
 	bool solid;
@@ -20,20 +23,26 @@ class Level
 	//struct Physics phys;
 	
 	public: 
-		int width, height;
-		struct Block **blocks;
 	
-		Level();
-		~Level();
-		
+	int width, height;
+	struct Block **blocks;
+	std::vector<GameObject *> collidables;
+	
+
+	Level();
+	~Level();
+	
 	private:
 	
 	void initLevel();
-	void loadLevel();
+	void loadBlocks();
 	void destroyLevel();
 	
 	public:
-
+	
+	
+	void checkCollisions(Player *);
+	void updateLevel(Player *);
 	void renderLevel(SDL_Renderer *);
 };
 
