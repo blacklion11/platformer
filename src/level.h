@@ -14,7 +14,6 @@ struct Block: public GameObject
 	int size;
 	bool solid;
 	bool collidable;
-	SDL_Rect rect;
 	SDL_Color color;
 };
 

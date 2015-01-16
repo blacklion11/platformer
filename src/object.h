@@ -11,6 +11,7 @@ class Object
 	public:
 	
 	SDL_Rect box;
+	SDL_Color color;
 	
 	Object();
 	~Object();
@@ -20,6 +21,7 @@ class Object
 	virtual void setY(int);
 	virtual void setW(int);
 	virtual void setH(int);
+	virtual void setColor(int, int, int, int);
 	
 	virtual int getX();
 	virtual int getY();

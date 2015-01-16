@@ -39,6 +39,9 @@ void Level::initLevel()
 	SDL_Log("Level Initialized");
 }
 
+/**
+*	Load the blocks used in the level
+*/
 void Level::loadBlocks()
 {	
 	//phys.gravity = 5.0f;
@@ -73,11 +76,11 @@ void Level::loadBlocks()
 						// Configure the block
 						blocks[counterY][counterX].size = 32;
 						blocks[counterY][counterX].solid = false;
-						blocks[counterY][counterX].collidable = true;
-						blocks[counterY][counterX].rect.x = counterX * blocks[counterY][counterX].size;
-						blocks[counterY][counterX].rect.y = counterY * blocks[counterY][counterX].size;
-						blocks[counterY][counterX].rect.w = blocks[counterY][counterX].size;
-						blocks[counterY][counterX].rect.h = blocks[counterY][counterX].size;
+						blocks[counterY][counterX].collidable = false;
+						blocks[counterY][counterX].box.x = counterX * blocks[counterY][counterX].size;
+						blocks[counterY][counterX].box.y = counterY * blocks[counterY][counterX].size;
+						blocks[counterY][counterX].box.w = blocks[counterY][counterX].size;
+						blocks[counterY][counterX].box.h = blocks[counterY][counterX].size;
 						blocks[counterY][counterX].color.r = 255;
 						blocks[counterY][counterX].color.g = 255;
 						blocks[counterY][counterX].color.b = 255;
@@ -87,10 +90,10 @@ void Level::loadBlocks()
 						blocks[counterY][counterX].size = 32;
 						blocks[counterY][counterX].solid = true;
 						blocks[counterY][counterX].collidable = true;
-						blocks[counterY][counterX].rect.x = counterX * blocks[counterY][counterX].size;
-						blocks[counterY][counterX].rect.y = counterY * blocks[counterY][counterX].size;
-						blocks[counterY][counterX].rect.w = blocks[counterY][counterX].size;
-						blocks[counterY][counterX].rect.h = blocks[counterY][counterX].size;
+						blocks[counterY][counterX].box.x = counterX * blocks[counterY][counterX].size;
+						blocks[counterY][counterX].box.y = counterY * blocks[counterY][counterX].size;
+						blocks[counterY][counterX].box.w = blocks[counterY][counterX].size;
+						blocks[counterY][counterX].box.h = blocks[counterY][counterX].size;
 						blocks[counterY][counterX].color.r = 0;
 						blocks[counterY][counterX].color.g = 255;
 						blocks[counterY][counterX].color.b = 0;
@@ -106,7 +109,7 @@ void Level::loadBlocks()
 				counterX++;
 			}
 			counterY++;
-		}
+		}		
 	}
 	catch(ifstream::failure e)
 	{
@@ -118,32 +121,40 @@ void Level::loadBlocks()
 }
 
 
-
+/**
+*	Check for collisions
+*/
 void Level::checkCollisions(Player *player)
 {
 	for(unsigned int i = 0; i < collidables.size(); i++)
 	{	
 	
-		//SDL_Log("Player Position: %d, %d              Block 1 Position: %d, %d", player->getX(), player->getY(), collidables[1]->box.x, collidables[1]->box.y);
 		//check if the player collides with any blocks
-		if(SDL_IntersectRect(&(player->box), &(collidables[i]->box), NULL) == SDL_TRUE)
+		if(SDL_HasIntersection(&(player->box), &(collidables[i]->box)) == SDL_TRUE)
 		{
-			SDL_Log("Collision");
+			SDL_Log("Yes");
+			player->setColor(0, 0, 0, 255);
+			break;
 		}
 		else
 		{
-			//SDL_Log("No Collision");
+			player->setColor(255, 0, 0, 255);
 		}
 		
 	}
 }
 
-
+/**
+*	Update the level
+*/
 void Level::updateLevel(Player *player)
 {
 	checkCollisions(player);
 }
 
+/**
+*	Render the level
+*/
 void Level::renderLevel(SDL_Renderer *renderer)
 {
 	for(int i = 0; i < width; i++)
@@ -156,7 +167,7 @@ void Level::renderLevel(SDL_Renderer *renderer)
 								   blocks[i][j].color.b,
 								   blocks[i][j].color.a
 								  );
-			SDL_RenderFillRect(renderer, &(blocks[i][j].rect));
+			SDL_RenderFillRect(renderer, &(blocks[i][j].box));
 		}
 	}
 }

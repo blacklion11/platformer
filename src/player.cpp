@@ -18,6 +18,10 @@ void Player::initPlayer()
 	box.y = 50;
 	box.w = box.h = 28;
 	movespeed = 5;
+	color.r = 255;
+	color.g = 0;
+	color.b = 0;
+	color.a = 255;
 	//falling = true;
 }
 
@@ -30,7 +34,7 @@ void Player::updatePlayer()
 
 void Player::renderPlayer(SDL_Renderer *renderer)
 {
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderFillRect(renderer, &box);
 }
 
