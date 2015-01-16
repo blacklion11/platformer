@@ -8,6 +8,7 @@
 #include<vector>
 #include"object.h"
 #include"player.h"
+#include"camera.h"
 
 struct Block: public GameObject
 {
@@ -42,7 +43,7 @@ class Level
 	
 	void checkCollisions(Player *);
 	void updateLevel(Player *);
-	void renderLevel(SDL_Renderer *);
+	void renderLevel(SDL_Renderer *, Camera *);
 };
 
 

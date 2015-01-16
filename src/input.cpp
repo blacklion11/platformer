@@ -18,21 +18,33 @@ bool space = false;
 
 void checkKeys()
 {
+	/**
+	*	This sets the delta movement to test for possible collisions
+	*/
 	if(left)
 	{
-		gm->player->setX(gm->player->getX() - gm->player->movespeed);
+		gm->player->deltaX = -(gm->player->movespeed);
 	}
 	if(right)
 	{
-		gm->player->setX(gm->player->getX() + gm->player->movespeed);
+		gm->player->deltaX = gm->player->movespeed;
 	}
 	if(up)
 	{
-		gm->player->setY(gm->player->getY() - gm->player->movespeed);
+		gm->player->deltaY = -(gm->player->movespeed);
 	}
 	if(down)
 	{
-		gm->player->setY(gm->player->getY() + gm->player->movespeed);
+		gm->player->deltaY = gm->player->movespeed;
+	}
+	
+	if(!(left || right))
+	{
+		gm->player->deltaX = 0;
+	}
+	if(!(up || down))
+	{
+		gm->player->deltaY = 0;
 	}
 }
 

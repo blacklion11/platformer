@@ -3,6 +3,7 @@
 
 #include<SDL2/SDL.h>
 #include"entity.h"
+#include"camera.h"
 
 class Player: public Character
 {
@@ -13,8 +14,9 @@ class Player: public Character
 	~Player();
 	
 	void initPlayer();
-	void updatePlayer();
+	void updatePlayer(Camera *);
 	void renderPlayer(SDL_Renderer *);
+	void updateCamera(Camera *);
 	
 	void setXY(int , int);
 	void setX(int);

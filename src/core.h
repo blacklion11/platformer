@@ -15,6 +15,8 @@
 #include"gamemanager.h"
 
 
+
+
 void initCore();
 void runCore();
 void quitCore();

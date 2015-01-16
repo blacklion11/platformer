@@ -24,9 +24,9 @@ void World::updateWorld(Player *player)
 	level->updateLevel(player);
 }
 
-void World::renderWorld(SDL_Renderer *renderer)
+void World::renderWorld(SDL_Renderer *renderer, Camera *camera)
 {
 	
 	//render the level
-	level->renderLevel(renderer);
+	level->renderLevel(renderer, camera);
 }

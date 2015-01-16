@@ -5,6 +5,7 @@
 #include"player.h"
 #include"physics.h"
 #include"world.h"
+#include"camera.h"
 
 class GameManager
 {
@@ -14,6 +15,7 @@ class GameManager
 	
 	Player *player;
 	World *world;
+	Camera *camera;
 	
 	//ctor
 	GameManager();

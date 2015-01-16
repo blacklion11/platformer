@@ -1,5 +1,8 @@
 #include"gamemanager.h"
 
+extern SDL_Window *window;
+
+
 //ctor
 GameManager::GameManager()
 {
@@ -16,6 +19,7 @@ GameManager::~GameManager()
 void GameManager::initGame()
 {
 	player = new Player();  //intializes the player
+	camera = new Camera();
 	//loadAssets(); // loads all the assets the game needs to run (i.e level maps, character sprites, backgrounds, etc)
 	world = new World(); // create the world
 }
@@ -28,6 +32,8 @@ void GameManager::destroyGame()
 
 void GameManager::updateGame()
 {
+	player->updatePlayer(camera);
+	
 	world->updateWorld(player);
 }
 
@@ -45,7 +51,9 @@ void GameManager::renderGame(SDL_Renderer *renderer)
 	
 	
 	// Draw the world
-	world->renderWorld(renderer);
+	world->renderWorld(renderer, camera);
+	
+	
 	
 	
 	// Draw the player
@@ -54,7 +62,34 @@ void GameManager::renderGame(SDL_Renderer *renderer)
 	
 	/**
 	* Render To Screen
-	*/
+	*/ 
 	SDL_RenderPresent(renderer);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
