@@ -126,48 +126,76 @@ void Level::loadBlocks()
 /**
 *	Check for collisions
 */
+
+
+bool checkHorCollisions(SDL_Rect *testPos)
+{
+
+}
+
+bool checkVerCollisions(SDL_Rect *testPos)
+{
+
+}
+
 void Level::checkCollisions(Player *player)
 {
 	for(unsigned int i = 0; i < collidables.size(); i++)
 	{	
 	
 		//check if the player collides with any blocks
-		if(SDL_HasIntersection(&(player->box), &(collidables[i]->box)) == SDL_TRUE)
+		SDL_Rect testPos;
+		testPos.x = player->box.x + player->deltaX;
+		testPos.y = player->box.y + player->deltaY;
+		testPos.w = player->box.w;
+		testPos.h = player->box.h;
+		if(SDL_HasIntersection(&testPos, &(collidables[i]->box)) == SDL_TRUE)
 		{
 			//test the four edges to see where the collision is
 			bool left, right, top, bottom;
-			if(collidables[i]->box.x + collidables[i]->box.w > (player->box.x + player->deltaX)
-			&& collidables[i]->box.x + collidables[i]->box.w < (player->box.x + player->box.w + player->deltaX))
+			left = right = top = bottom = false;
+			if(collidables[i]->box.x + collidables[i]->box.w > testPos.x
+			&& collidables[i]->box.x + collidables[i]->box.w < testPos.x + testPos.w)
 			{
 				//collision on left side of player
 				left = true;
-				player->deltaX = 0;
-				break;
+				//player->deltaX = 0;
+				//break;
 			}
-			if(collidables[i]->box.x < (player->box.x + player->box.w + player->deltaX) 
-			&& collidables[i]->box.x > (player->box.x + player->deltaX))
+			if(collidables[i]->box.x < testPos.x + testPos.w 
+			&& collidables[i]->box.x > testPos.x)
 			{
 				//collision on right side of player
 				right = true;
-				player->deltaX = 0;
-				break;
+				//player->deltaX = 0;
+				//break;
 			}
-			if(collidables[i]->box.y + collidables[i]->box.h > (player->box.y + player->deltaY)
-			&& collidables[i]->box.y + collidables[i]->box.h < (player->box.y + player->box.h + player->deltaY))
+			if(collidables[i]->box.y + collidables[i]->box.h > testPos.y
+			&& collidables[i]->box.y + collidables[i]->box.h < testPos.y + testPos.h)
 			{
 				//collision on top side of player
 				top = true;
-				player->deltaY = 0;
-				break;
+				//player->deltaY = 0;
+				//break;
 			}
-			if(collidables[i]->box.y < (player->box.y + player->box.h + player->deltaY)
-			&& collidables[i]->box.y > (player->box.y + player->deltaY))
+			if(collidables[i]->box.y < testPos.y + testPos.h
+			&& collidables[i]->box.y > testPos.y)
 			{
 				//collision on bottom side of player
 				bottom = true;
-				player->deltaY = 0;
-				break;
+				//player->deltaY = 0;
+				//break;
 			}
+			
+			if(left || right)
+			{
+				player->deltaX = 0;
+			}
+			if(top || bottom)
+			{
+				player->deltaY = 0;
+			}
+			
 			break;
 		}
 		else
@@ -195,50 +223,44 @@ void Level::updateLevel(Player *player)
 */
 void Level::renderLevel(SDL_Renderer *renderer, Camera *camera)
 {
-	SDL_Renderer *rend = SDL_CreateSoftwareRenderer(screen);
-
+	//SDL_Renderer *tileRend = SDL_CreateSoftwareRenderer(screen);
+	//SDL_Surface *crop = SDL_CreateRGBSurface(0, camera->box.w, camera->box.h, 32, 0, 0, 0, 0);
+	
 	// Render the level to "camera screen"
 	for(int i = 0; i < width; i++)
 	{
 		for(int j = 0; j < height; j++)
 		{
 			
-			SDL_SetRenderDrawColor(rend, 
+			SDL_SetRenderDrawColor(renderer, 
 								   blocks[i][j].color.r,
 								   blocks[i][j].color.g,
 								   blocks[i][j].color.b,
 								   blocks[i][j].color.a
 								  );
-			SDL_RenderFillRect(rend, &(blocks[i][j].box));
+			SDL_Rect offset;
+			offset.x = blocks[i][j].box.x - camera->box.x;
+			offset.y = blocks[i][j].box.y - camera->box.y;
+			offset.w = camera->box.w;
+			offset.h = camera->box.h;
+			SDL_RenderFillRect(renderer, &offset);
+			//SDL_RenderFillRect(renderer, &(blocks[i][j].box));
 			
 		}
 	}
 	
-	SDL_Texture *map = SDL_CreateTextureFromSurface(renderer, screen);
-	/*
-	// Set the viewport for rendering
-	// This keeps the player in the center of the screen
-	int winWidth, winHeight;
-	SDL_GetWindowSize(window, &winWidth, &winHeight);
-	SDL_Rect camera;
-	camera.x = (player->box.x + (player->box.w / 2)) - (winWidth / 2);
-	//camera.x = player->box.x;
-	if(camera.x < 0)
-		camera.x = 0;
-	camera.y = (player->box.y + (player->box.h / 2)) - (winHeight / 2);
-	//camera.y = player->box.y;
-	if(camera.y < 0)
-		camera.y = 0;
-	camera.w = winWidth;
-	camera.h = winHeight;
-	*/
-	SDL_Log("camera position:  %d, %d", camera->box.x, camera->box.y);
+	
+	//SDL_BlitSurface(screen, &(camera->box), crop, NULL);
+	//SDL_Texture *map = SDL_CreateTextureFromSurface(renderer, crop);
+
+	//SDL_Log("camera position:  %d, %d", camera->box.x, camera->box.y);
 	//SDL_Log("player position:  %d, %d", player->box.x, player->box.y);
 
-	SDL_RenderCopy(renderer, map, NULL, &(camera->box)); 
+	//SDL_RenderCopy(renderer, map, NULL, NULL); 
 	
-	SDL_DestroyTexture(map);
-	SDL_DestroyRenderer(rend);
+	//SDL_FreeSurface(crop);
+	//SDL_DestroyTexture(map);
+	//SDL_DestroyRenderer(tileRend);
 }
 
 

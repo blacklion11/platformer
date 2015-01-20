@@ -15,7 +15,7 @@ class Player: public Character
 	
 	void initPlayer();
 	void updatePlayer(Camera *);
-	void renderPlayer(SDL_Renderer *);
+	void renderPlayer(SDL_Renderer *, Camera *);
 	void updateCamera(Camera *);
 	
 	void setXY(int , int);

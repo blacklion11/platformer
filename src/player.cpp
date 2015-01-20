@@ -1,6 +1,7 @@
 #include"player.h"
 
 
+
 extern SDL_Window *window;
 
 Player::Player()
@@ -18,7 +19,7 @@ void Player::initPlayer()
 	box.x = 200;
 	box.y = 200;
 	box.w = box.h = 28;
-	movespeed = 5;
+	movespeed = 3;
 	deltaX = 0;
 	deltaY = 0;
 	color.r = 255;
@@ -44,22 +45,26 @@ void Player::updateCamera(Camera *camera)
 		camera->box.x = 0;
 	if(camera->box.y < 0)
 		camera->box.y = 0;
+	if(camera->box.x + camera->box.w > camera->numLevelTiles * camera->tileSize)
+		camera->box.x = (camera->numLevelTiles * camera->tileSize) - camera->box.w;
+	if(camera->box.y + camera->box.h > camera->numLevelTiles * camera->tileSize)
+		camera->box.y = (camera->numLevelTiles * camera->tileSize) - camera->box.h;
 }
 
 
 
-void Player::renderPlayer(SDL_Renderer *renderer)
+void Player::renderPlayer(SDL_Renderer *renderer, Camera *camera)
 {
-	int winWidth, winHeight;
-	SDL_GetWindowSize(window, &winWidth, &winHeight);
-	SDL_Rect drawBounds;
-	drawBounds.x = (winWidth / 2) - (box.w / 2);
-	drawBounds.y = (winHeight / 2) - (box.h / 2);
-	drawBounds.w = box.w;
-	drawBounds.h = box.h;
+
+	SDL_Rect offset;
+	offset.x = box.x - camera->box.x;
+	offset.y = box.y - camera->box.y;
+	offset.w = box.w;
+	offset.h = box.h;
+	
 	
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-	SDL_RenderFillRect(renderer, &box);
+	SDL_RenderFillRect(renderer, &offset);
 }
 
 
