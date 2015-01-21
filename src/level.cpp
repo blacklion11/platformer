@@ -187,13 +187,31 @@ void Level::checkCollisions(Player *player)
 				//break;
 			}
 			
-			if(left || right)
+			if(player->deltaX < 0)
 			{
-				player->deltaX = 0;
+				if(left)
+				{
+					player->deltaX = 0;
+				}
+			}else
+			{
+				if(right)
+				{
+					player->deltaX = 0;
+				}
 			}
-			if(top || bottom)
+			if(player->deltaY < 0)
 			{
-				player->deltaY = 0;
+				if(top)
+				{
+					player->deltaY = 0;
+				}
+			}else
+			{
+				if(bottom)
+				{
+					player->deltaY = 0;
+				}
 			}
 			
 			break;
