@@ -38,7 +38,8 @@ class GameObject: public Object
 
 	bool moveable;  // boolean to set if the object is able to move
 	bool collidable; // boolean if things will collide with it
-	int deltaX, deltaY; // the delta for movement to check for collisions
+	int dx, dy; // the direction and movement speed variables
+	int tempX, tempY;  // the temp location for movement to check for collisions
 	
 	GameObject();
 	~GameObject();

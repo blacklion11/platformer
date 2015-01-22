@@ -45,6 +45,10 @@ class Level
 	
 	Block* getBlock(int, int);
 	void checkCollisions(Player *);
+	void checkLeftCollisions(Player *);
+	void checkRightCollisions(Player*);
+	void checkTopCollisions(Player *);
+	void checkBottomCollisions(Player *);
 	void updateLevel(Player *);
 	void renderLevel(SDL_Renderer *, Camera *);
 	

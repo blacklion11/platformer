@@ -125,15 +125,130 @@ void Level::loadBlocks()
 *	Check for collisions
 */
 
-
-bool checkHorCollisions(SDL_Rect *testPos)
+/*
+void Level::checkHorCollisions(Player *player)
 {
+	// Create the test position that takes 
+	// the delta positions in to account
+	SDL_Rect testPos;
+	testPos.x = player->getX();
+	testPos.y = player->getY();
+	testPos.w = player->getW();
+	testPos.h = player->getH();
+	
+	
+	struct Block testBlocks[4];
+	testBlocks[0] = blocks[testPos.x / tileSize][testPos.y / tileSize];  // Left Tile
+	testBlocks[1] = blocks[(testPos.x + testPos.w - 1) / tileSize][testPos.y / tileSize]; // Right Tile
+	testBlocks[2] = blocks[testPos.x / tileSize][(testPos.y + testPos.h - 1) / tileSize];  //Bottom Left
+	testBlocks[3] = blocks[(testPos.x + testPos.w - 1) / tileSize][(testPos.y + testPos.h - 1) / tileSize]; // Bottom Right
+	
+	bool topLeft = testBlocks[0].solid;
+	bool topRight = testBlocks[1].solid;
+	bool bottomLeft = testBlocks[2].solid;
+	bool bottomRight = testBlocks[3].solid;
+	
+	if(player->dx < 0)
+	{
+		if(topLeft || bottomLeft)
+		{
+			SDL_Log("Hit Left");
+		}
+	}
+	if(player->dx > 0)
+	{
+		if(topRight || bottomRight)
+		{
+			SDL_Log("Hit Right");
+		}
+	}
+}
+*/
 
+void Level::checkLeftCollisions(Player *player)
+{
+	// Create the test position that takes 
+	// the delta positions in to account
+	SDL_Rect testPos;
+	testPos.x = player->getX() + player->dx;
+	testPos.y = player->getY();
+	testPos.w = player->getW();
+	testPos.h = player->getH();
+	
+	int rowTop = testPos.y / tileSize;
+	int rowBot = (testPos.y + testPos.h) / tileSize;
+	int colLeft = testPos.x / tileSize;
+	int colRight = (testPos.x + testPos.w) / tileSize;
+	
+	bool collision = blocks[rowTop][colLeft].solid || blocks[rowBot][colLeft].solid;
+	
+	if(collision)
+	{
+		player->dx = 0;
+		player->tempX = blocks[testPos.y / tileSize][testPos.x / tileSize].box.x + blocks[testPos.y / tileSize][testPos.x / tileSize].box.w + 1; 
+	}
 }
 
-bool checkVerCollisions(SDL_Rect *testPos)
+void Level::checkRightCollisions(Player *player)
 {
+	// Create the test position that takes 
+	// the delta positions in to account
+	SDL_Rect testPos;
+	testPos.x = player->getX() + player->dx;
+	testPos.y = player->getY();
+	testPos.w = player->getW();
+	testPos.h = player->getH();
+	
+	int rowTop = testPos.y / tileSize;
+	int rowBot = (testPos.y + testPos.h) / tileSize;
+	int colLeft = testPos.x / tileSize;
+	int colRight = (testPos.x + testPos.w) / tileSize;
+	
+	bool collision = blocks[rowTop][colRight].solid || blocks[rowBot][colRight].solid;
+	
+	if(collision)
+	{
+		player->dx = 0;
+		player->tempX = blocks[testPos.y / tileSize][(testPos.x / tileSize) + 1].box.x - player->getW() - 1; 
+	}
+}
 
+void Level::checkTopCollisions(Player *player)
+{
+	// Create the test position that takes 
+	// the delta positions in to account
+	SDL_Rect testPos;
+	testPos.x = player->getX();
+	testPos.y = player->getY() + player->dy;
+	testPos.w = player->getW();
+	testPos.h = player->getH();
+	
+	bool collision = blocks[testPos.y / tileSize][testPos.x / tileSize].solid || blocks[testPos.y / tileSize][(testPos.x + testPos.w)/ tileSize].solid;
+
+	if(collision)
+	{
+		player->dy = 0;
+		player->tempY = blocks[testPos.y / tileSize][testPos.x / tileSize].box.y + blocks[testPos.y / tileSize][testPos.x / tileSize].box.h + 1; 
+	}
+}
+
+void Level::checkBottomCollisions(Player *player)
+{
+	// Create the test position that takes 
+	// the delta positions in to account
+	SDL_Rect testPos;
+	testPos.x = player->getX();
+	testPos.y = player->getY() + player->dy;
+	testPos.w = player->getW();
+	testPos.h = player->getH();
+	
+	bool collision = blocks[(testPos.y + testPos.h) / tileSize][testPos.x / tileSize].solid || blocks[(testPos.y + testPos.y) / tileSize][(testPos.x + testPos.w)/ tileSize].solid;
+
+	if(collision)
+	{
+		player->dy = 0;
+		player->tempY = blocks[(testPos.y / tileSize) + 1][testPos.x / tileSize].box.y - player->getH() - 1; 
+	}
 }
 
 Block* Level::getBlock(int row, int col)
@@ -144,32 +259,31 @@ Block* Level::getBlock(int row, int col)
 
 void Level::checkCollisions(Player *player)
 {
-	SDL_Rect testPos;
-	testPos.x = player->getX();
-	testPos.y = player->getY();
-	testPos.w = player->getW();
-	testPos.h = player->getH();
 	
-	int rowTile = testPos.x / tileSize;
-	int colTile = testPos.y / tileSize;
 	
-	struct Block* block = getBlock(rowTile, colTile);
+	player->tempX = player->getX();
+	player->tempY = player->getY();
 	
-	SDL_Log("Block ID: %d", blocks[colTile][rowTile].id);
-	
-	/*
-	SDL_Log("Player Position: %d, %d", player->getX(), player->getY());
-	SDL_Log("Block: %d, %d   Type:%d", rowTile, colTile, block->id); 
-	
-	if(block->collidable)
+	if(player->dx < 0)
 	{
-		SDL_Log("Collision");
+		checkLeftCollisions(player);
 	}
-	else
+	
+	if(player->dx > 0)
 	{
-		SDL_Log("No Collision");
+		checkRightCollisions(player);
 	}
-	*/
+	if(player->dy < 0)
+	{
+		checkTopCollisions(player);
+	}
+	if(player->dy > 0)
+	{
+		checkBottomCollisions(player);
+	}
+	
+	player->tempX += player->dx;
+	player->tempY += player->dy;
 }
 
 /**

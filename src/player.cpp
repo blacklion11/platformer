@@ -20,8 +20,8 @@ void Player::initPlayer()
 	box.y = 200;
 	box.w = box.h = 28;
 	movespeed = 7;
-	deltaX = 0;
-	deltaY = 0;
+	dx = 0;
+	dy = 0;
 	color.r = 255;
 	color.g = 0;
 	color.b = 0;

@@ -15,6 +15,6 @@ GameObject::~GameObject()
 
 void GameObject::applyMovement()
 {
-	box.x += deltaX;
-	box.y += deltaY;
+	box.x = tempX;
+	box.y = tempY;
 }

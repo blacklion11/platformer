@@ -23,28 +23,28 @@ void checkKeys()
 	*/
 	if(left)
 	{
-		gm->player->deltaX = -(gm->player->movespeed);
+		gm->player->dx = -(gm->player->movespeed);
 	}
 	if(right)
 	{
-		gm->player->deltaX = gm->player->movespeed;
+		gm->player->dx = gm->player->movespeed;
 	}
 	if(up)
 	{
-		gm->player->deltaY = -(gm->player->movespeed);
+		gm->player->dy = -(gm->player->movespeed);
 	}
 	if(down)
 	{
-		gm->player->deltaY = gm->player->movespeed;
+		gm->player->dy = gm->player->movespeed;
 	}
 	
 	if(!(left || right))
 	{
-		gm->player->deltaX = 0;
+		gm->player->dx = 0;
 	}
 	if(!(up || down))
 	{
-		gm->player->deltaY = 0;
+		gm->player->dy = 0;
 	}
 }
 
