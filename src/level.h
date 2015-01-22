@@ -6,12 +6,15 @@
 
 #include<SDL2/SDL.h>
 #include<vector>
+#include<string>
 #include"object.h"
 #include"player.h"
 #include"camera.h"
 
+
 struct Block: public GameObject
 {
+	int id;
 	int size;
 	bool solid;
 	bool collidable;
@@ -25,8 +28,8 @@ class Level
 	public: 
 	
 	int width, height;
-	struct Block **blocks;
-	std::vector<GameObject *> collidables;
+	int tileSize;
+	struct Block **blocks; 
 	
 
 	Level();
@@ -40,10 +43,11 @@ class Level
 	
 	public:
 	
-	
+	Block* getBlock(int, int);
 	void checkCollisions(Player *);
 	void updateLevel(Player *);
 	void renderLevel(SDL_Renderer *, Camera *);
+	
 };
 
 

@@ -31,6 +31,7 @@ void Level::destroyLevel()
 void Level::initLevel()
 {
 	width = height = 32;
+	tileSize = 32;
 	
 	blocks = (struct Block **) malloc(width * sizeof(struct Block *));
 	for(int i = 0; i < width; i++)
@@ -76,7 +77,8 @@ void Level::loadBlocks()
 				{
 					case BLOCK_AIR:
 						// Configure the block
-						blocks[counterY][counterX].size = 32;
+						blocks[counterY][counterX].id = 0;
+						blocks[counterY][counterX].size = tileSize;
 						blocks[counterY][counterX].solid = false;
 						blocks[counterY][counterX].collidable = false;
 						blocks[counterY][counterX].box.x = counterX * blocks[counterY][counterX].size;
@@ -89,7 +91,8 @@ void Level::loadBlocks()
 						blocks[counterY][counterX].color.a = 255;
 						break;
 					case BLOCK_DIRT:
-						blocks[counterY][counterX].size = 32;
+						blocks[counterY][counterX].id = 1;
+						blocks[counterY][counterX].size = tileSize;
 						blocks[counterY][counterX].solid = true;
 						blocks[counterY][counterX].collidable = true;
 						blocks[counterY][counterX].box.x = counterX * blocks[counterY][counterX].size;
@@ -103,11 +106,6 @@ void Level::loadBlocks()
 						break;
 				}
 				
-				// if the block is collidable add to collidables vector
-				if(blocks[counterY][counterX].collidable)
-				{	
-					collidables.push_back(&(blocks[counterY][counterX]));
-				}
 				counterX++;
 			}
 			counterY++;
@@ -138,90 +136,40 @@ bool checkVerCollisions(SDL_Rect *testPos)
 
 }
 
+Block* Level::getBlock(int row, int col)
+{
+	
+	return (struct Block*) &(blocks[col, row]);
+}
+
 void Level::checkCollisions(Player *player)
 {
-	for(unsigned int i = 0; i < collidables.size(); i++)
-	{	
+	SDL_Rect testPos;
+	testPos.x = player->getX();
+	testPos.y = player->getY();
+	testPos.w = player->getW();
+	testPos.h = player->getH();
 	
-		//check if the player collides with any blocks
-		SDL_Rect testPos;
-		testPos.x = player->box.x + player->deltaX;
-		testPos.y = player->box.y + player->deltaY;
-		testPos.w = player->box.w;
-		testPos.h = player->box.h;
-		if(SDL_HasIntersection(&testPos, &(collidables[i]->box)) == SDL_TRUE)
-		{
-			//test the four edges to see where the collision is
-			bool left, right, top, bottom;
-			left = right = top = bottom = false;
-			if(collidables[i]->box.x + collidables[i]->box.w > testPos.x
-			&& collidables[i]->box.x + collidables[i]->box.w < testPos.x + testPos.w)
-			{
-				//collision on left side of player
-				left = true;
-				//player->deltaX = 0;
-				//break;
-			}
-			if(collidables[i]->box.x < testPos.x + testPos.w 
-			&& collidables[i]->box.x > testPos.x)
-			{
-				//collision on right side of player
-				right = true;
-				//player->deltaX = 0;
-				//break;
-			}
-			if(collidables[i]->box.y + collidables[i]->box.h > testPos.y
-			&& collidables[i]->box.y + collidables[i]->box.h < testPos.y + testPos.h)
-			{
-				//collision on top side of player
-				top = true;
-				//player->deltaY = 0;
-				//break;
-			}
-			if(collidables[i]->box.y < testPos.y + testPos.h
-			&& collidables[i]->box.y > testPos.y)
-			{
-				//collision on bottom side of player
-				bottom = true;
-				//player->deltaY = 0;
-				//break;
-			}
-			
-			if(player->deltaX < 0)
-			{
-				if(left)
-				{
-					player->deltaX = 0;
-				}
-			}else
-			{
-				if(right)
-				{
-					player->deltaX = 0;
-				}
-			}
-			if(player->deltaY < 0)
-			{
-				if(top)
-				{
-					player->deltaY = 0;
-				}
-			}else
-			{
-				if(bottom)
-				{
-					player->deltaY = 0;
-				}
-			}
-			
-			break;
-		}
-		else
-		{
-			player->setColor(255, 0, 0, 255);
-		}
-		
+	int rowTile = testPos.x / tileSize;
+	int colTile = testPos.y / tileSize;
+	
+	struct Block* block = getBlock(rowTile, colTile);
+	
+	SDL_Log("Block ID: %d", blocks[colTile][rowTile].id);
+	
+	/*
+	SDL_Log("Player Position: %d, %d", player->getX(), player->getY());
+	SDL_Log("Block: %d, %d   Type:%d", rowTile, colTile, block->id); 
+	
+	if(block->collidable)
+	{
+		SDL_Log("Collision");
 	}
+	else
+	{
+		SDL_Log("No Collision");
+	}
+	*/
 }
 
 /**
