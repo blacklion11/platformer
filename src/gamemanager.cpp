@@ -21,7 +21,7 @@ void GameManager::initGame()
 	player = new Player();  //intializes the player
 	camera = new Camera();
 	camera->tileSize = 32;
-	camera->numLevelTiles = 32;
+	camera->numLevelTiles = 16;
 	//loadAssets(); // loads all the assets the game needs to run (i.e level maps, character sprites, backgrounds, etc)
 	world = new World(); // create the world
 }

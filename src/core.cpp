@@ -43,7 +43,7 @@ void runCore()
 		//get input and test for game close
 		running = getInput() != -1;
 		
-		if(frameTime > 0.00166666f)  // if the execution time of the last frame is greater than the target fps time then execute this frame (this allows all computers to run the game at a constant speed regardless of processor speed)
+		if(frameTime > 0.0166666f)  // if the execution time of the last frame is greater than the target fps time then execute this frame (this allows all computers to run the game at a constant speed regardless of processor speed)
 		{
 			frameTime = 0; // reset the frame time
 			

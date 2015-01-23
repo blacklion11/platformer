@@ -12,7 +12,7 @@ bool left = false;
 bool right = false;
 bool up = false;
 bool down = false;
-bool space = false;
+bool jumping = false;
 
 
 
@@ -37,14 +37,14 @@ void checkKeys()
 	{
 		gm->player->dy = gm->player->movespeed;
 	}
+	if(jumping)
+	{
+		gm->player->setJumping(true);
+	}
 	
 	if(!(left || right))
 	{
 		gm->player->dx = 0;
-	}
-	if(!(up || down))
-	{
-		gm->player->dy = 0;
 	}
 }
 
@@ -62,17 +62,20 @@ int getInput()
 				{
 					case SDLK_ESCAPE:
 						return -1;
-					case SDLK_LEFT:
+					case SDLK_a:
 						left = true;
 						break;
-					case SDLK_RIGHT:
+					case SDLK_d:
 						right = true;
 						break;
-					case SDLK_UP:
+					case SDLK_w:
 						up = true;
 						break;
-					case SDLK_DOWN:
+					case SDLK_s:
 						down = true;
+						break;
+					case SDLK_SPACE:
+						jumping = true;
 						break;
 				}
 				break;
@@ -82,17 +85,20 @@ int getInput()
 				{
 					case SDLK_ESCAPE:
 						return -1;
-					case SDLK_LEFT:
+					case SDLK_a:
 						left = false;
 						break;
-					case SDLK_RIGHT:
+					case SDLK_d:
 						right = false;
 						break;
-					case SDLK_UP:
+					case SDLK_w:
 						up = false;
 						break;
-					case SDLK_DOWN:
+					case SDLK_s:
 						down = false;
+						break;
+					case SDLK_SPACE:
+						jumping = false;
 						break;
 				}
 				

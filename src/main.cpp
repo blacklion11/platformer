@@ -23,7 +23,7 @@ void initSDL()
 															0
 														);
 	
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED );
 	screen = SDL_GetWindowSurface(window);
 
 	

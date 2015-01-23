@@ -40,6 +40,10 @@ class GameObject: public Object
 	bool collidable; // boolean if things will collide with it
 	int dx, dy; // the direction and movement speed variables
 	int tempX, tempY;  // the temp location for movement to check for collisions
+	int maxFallSpeed; // The maximum speed the object can fall
+	int jumpSpeed;  // the object's jump speed
+	bool jumping;  // boolean to test if the player is jumping
+	bool grounded;  // boolean to test if the object is on the ground
 	
 	GameObject();
 	~GameObject();

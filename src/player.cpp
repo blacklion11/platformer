@@ -20,6 +20,8 @@ void Player::initPlayer()
 	box.y = 200;
 	box.w = box.h = 28;
 	movespeed = 7;
+	maxFallSpeed = 10;
+	jumpSpeed = -20;
 	dx = 0;
 	dy = 0;
 	color.r = 255;
@@ -32,6 +34,19 @@ void Player::initPlayer()
 
 void Player::updatePlayer(Camera *camera)
 {
+	// update jump
+	if(jumping && grounded)
+	{
+		dy = jumpSpeed;
+		jumping = false;
+		grounded = false;
+	}
+	else
+	{
+		jumping = false;
+	}
+
+
 	// update camera position
 	updateCamera(camera);
 }
@@ -80,9 +95,12 @@ void Player::setX(int x){box.x = x;}
 void Player::setY(int y){box.y = y;}
 void Player::setW(int w){box.w = w;}
 void Player::setH(int h){box.h = h;}
+void Player::setJumping(bool j){jumping = j;}
 
 int Player::getX(){return box.x;}
 int Player::getY(){return box.y;}
 int Player::getW(){return box.w;}
 int Player::getH(){return box.h;}
+
+/////////////////////////////////////////////////////////////
 

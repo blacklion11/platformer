@@ -24,6 +24,7 @@ class Player: public Character
 	void setY(int);
 	void setW(int);
 	void setH(int);
+	void setJumping(bool);
 	
 	int getX();
 	int getY();
@@ -31,6 +32,5 @@ class Player: public Character
 	int getH();
 
 };
-
 
 #endif

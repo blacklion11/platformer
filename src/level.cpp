@@ -30,8 +30,9 @@ void Level::destroyLevel()
 
 void Level::initLevel()
 {
-	width = height = 32;
+	width = height = 16;
 	tileSize = 32;
+	gravity = 2;
 	
 	blocks = (struct Block **) malloc(width * sizeof(struct Block *));
 	for(int i = 0; i < width; i++)
@@ -49,7 +50,7 @@ void Level::loadBlocks()
 {	
 	//phys.gravity = 5.0f;
 	string line, cblock;  // string for reading in and storing the block ids
-	ifstream file("level.txt");  // the stream used to read in the file
+	ifstream file("level_small.txt");  // the stream used to read in the file
 	
 	try
 	{
@@ -242,12 +243,14 @@ void Level::checkBottomCollisions(Player *player)
 	testPos.w = player->getW();
 	testPos.h = player->getH();
 	
-	bool collision = blocks[(testPos.y + testPos.h) / tileSize][testPos.x / tileSize].solid || blocks[(testPos.y + testPos.y) / tileSize][(testPos.x + testPos.w)/ tileSize].solid;
+	bool collision = blocks[(testPos.y + testPos.h) / tileSize][testPos.x / tileSize].solid || blocks[(testPos.y + testPos.h) / tileSize][(testPos.x + testPos.w)/ tileSize].solid;
 
+	
 	if(collision)
 	{
 		player->dy = 0;
-		player->tempY = blocks[(testPos.y / tileSize) + 1][testPos.x / tileSize].box.y - player->getH() - 1; 
+		player->tempY = blocks[(testPos.y / tileSize) + 1][testPos.x / tileSize].box.y - player->getH() - 1;
+		player->grounded = true;
 	}
 }
 
@@ -258,17 +261,17 @@ Block* Level::getBlock(int row, int col)
 }
 
 void Level::checkCollisions(Player *player)
-{
-	
-	
+{	
 	player->tempX = player->getX();
 	player->tempY = player->getY();
 	
+	// Apply Level Gravity
+	player->dy += gravity;
+
 	if(player->dx < 0)
 	{
 		checkLeftCollisions(player);
 	}
-	
 	if(player->dx > 0)
 	{
 		checkRightCollisions(player);
@@ -280,6 +283,8 @@ void Level::checkCollisions(Player *player)
 	if(player->dy > 0)
 	{
 		checkBottomCollisions(player);
+		if(player->dy > player->maxFallSpeed)
+			player->dy = player->maxFallSpeed;
 	}
 	
 	player->tempX += player->dx;

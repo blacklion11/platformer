@@ -30,6 +30,7 @@ class Level
 	int width, height;
 	int tileSize;
 	struct Block **blocks; 
+	int gravity;
 	
 
 	Level();
