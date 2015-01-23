@@ -30,17 +30,44 @@ void Level::destroyLevel()
 
 void Level::initLevel()
 {
-	width = height = 16;
-	tileSize = 32;
-	gravity = 2;
-	
-	blocks = (struct Block **) malloc(width * sizeof(struct Block *));
-	for(int i = 0; i < width; i++)
+	// Read in the first two lines of the level to 
+	// set the width and height of the level
+	string line, cblock;  // string for reading in and storing the block ids
+	ifstream file;  // the stream used to read in the file
+	try
 	{
-		blocks[i] = (struct Block *) malloc(height * sizeof(struct Block));
+		file.open("level.txt");
+		
+		for(int i = 0; i < 2; i++)
+		{
+			getline(file, line);
+			stringstream lineStream(line);
+			getline(lineStream, cblock, ' ');
+			std::string::size_type sz;  // alias of the size_t
+			
+			if(i == 0) width = (int)  std::atoi(cblock, &sz);
+			else height = std::atoi(cblock, &sz);
+		}
+		
+		file.close();
+		
+		SDL_Log("Width: %d   Height: %d", width, height);
+	}
+	catch(ifstream::failure e)
+	{
+		SDL_Log("Error reading level file");
 	}
 	
-	SDL_Log("Level Initialized");
+	tileSize = 32;
+	gravity = 1;
+	
+	blocks = (struct Block **) malloc(height * sizeof(struct Block *));
+	for(int i = 0; i < height; i++)
+	{
+		blocks[i] = (struct Block *) malloc(width * sizeof(struct Block));
+	}
+	
+	SDL_Log("\nLevel Initialized");
 }
 
 /**
@@ -48,13 +75,16 @@ void Level::initLevel()
 */
 void Level::loadBlocks()
 {	
+	SDL_Log("Loading Blocks...");
 	//phys.gravity = 5.0f;
 	string line, cblock;  // string for reading in and storing the block ids
-	ifstream file("level_small.txt");  // the stream used to read in the file
+	ifstream file("level.txt");  // the stream used to read in the file
 	
 	try
 	{
 		file.is_open();  // open the file
+		getline(file, line); // skip the first two lines (those are the width and height of the map)
+		getline(file, line); 
 		
 		// these keep track of which tile we are on
 		// in the level when assigning block types to it
@@ -64,11 +94,15 @@ void Level::loadBlocks()
 		//while the file has lines, read them 
 		while(getline(file, line))
 		{
+			
 			//SDL_Log("Line: %d being read", counterY);
 			stringstream lineStream(line);  //parse the string to separate the blocks for IDing
 			counterX = 0;  // reset the x counter for each level
+			
 			while(getline(lineStream, cblock, ' '))
 			{
+				//SDL_Log("Line Read: %d", counterX);
+				
 				// ID the blocks and load them into the level struct
 				const char *cstr = cblock.c_str();  //convert the string into a char array
 				char chartoken = *cstr;  // put that value into a standard char primitive
@@ -106,6 +140,7 @@ void Level::loadBlocks()
 						blocks[counterY][counterX].color.a = 255;
 						break;
 				}
+				//SDL_Log("Block Loaded: %d, %d", counterX, counterY);
 				
 				counterX++;
 			}
@@ -126,45 +161,6 @@ void Level::loadBlocks()
 *	Check for collisions
 */
 
-/*
-void Level::checkHorCollisions(Player *player)
-{
-	// Create the test position that takes 
-	// the delta positions in to account
-	SDL_Rect testPos;
-	testPos.x = player->getX();
-	testPos.y = player->getY();
-	testPos.w = player->getW();
-	testPos.h = player->getH();
-	
-	
-	struct Block testBlocks[4];
-	testBlocks[0] = blocks[testPos.x / tileSize][testPos.y / tileSize];  // Left Tile
-	testBlocks[1] = blocks[(testPos.x + testPos.w - 1) / tileSize][testPos.y / tileSize]; // Right Tile
-	testBlocks[2] = blocks[testPos.x / tileSize][(testPos.y + testPos.h - 1) / tileSize];  //Bottom Left
-	testBlocks[3] = blocks[(testPos.x + testPos.w - 1) / tileSize][(testPos.y + testPos.h - 1) / tileSize]; // Bottom Right
-	
-	bool topLeft = testBlocks[0].solid;
-	bool topRight = testBlocks[1].solid;
-	bool bottomLeft = testBlocks[2].solid;
-	bool bottomRight = testBlocks[3].solid;
-	
-	if(player->dx < 0)
-	{
-		if(topLeft || bottomLeft)
-		{
-			SDL_Log("Hit Left");
-		}
-	}
-	if(player->dx > 0)
-	{
-		if(topRight || bottomRight)
-		{
-			SDL_Log("Hit Right");
-		}
-	}
-}
-*/
 
 void Level::checkLeftCollisions(Player *player)
 {
@@ -312,9 +308,9 @@ void Level::renderLevel(SDL_Renderer *renderer, Camera *camera)
 	//SDL_Surface *crop = SDL_CreateRGBSurface(0, camera->box.w, camera->box.h, 32, 0, 0, 0, 0);
 	
 	// Render the level to "camera screen"
-	for(int i = 0; i < width; i++)
+	for(int i = 0; i < height; i++)
 	{
-		for(int j = 0; j < height; j++)
+		for(int j = 0; j < width; j++)
 		{
 			
 			SDL_SetRenderDrawColor(renderer, 
@@ -333,19 +329,6 @@ void Level::renderLevel(SDL_Renderer *renderer, Camera *camera)
 			
 		}
 	}
-	
-	
-	//SDL_BlitSurface(screen, &(camera->box), crop, NULL);
-	//SDL_Texture *map = SDL_CreateTextureFromSurface(renderer, crop);
-
-	//SDL_Log("camera position:  %d, %d", camera->box.x, camera->box.y);
-	//SDL_Log("player position:  %d, %d", player->box.x, player->box.y);
-
-	//SDL_RenderCopy(renderer, map, NULL, NULL); 
-	
-	//SDL_FreeSurface(crop);
-	//SDL_DestroyTexture(map);
-	//SDL_DestroyRenderer(tileRend);
 }
 
 

@@ -9,7 +9,8 @@ class Camera: public Object
 
 	public:
 
-	int numLevelTiles;
+	int numLevelTilesWidth;
+	int numLevelTilesHeight;
 	int tileSize;
 	
 	Camera();

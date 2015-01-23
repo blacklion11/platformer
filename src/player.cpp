@@ -19,9 +19,9 @@ void Player::initPlayer()
 	box.x = 200;
 	box.y = 200;
 	box.w = box.h = 28;
-	movespeed = 7;
-	maxFallSpeed = 10;
-	jumpSpeed = -20;
+	movespeed = 4;
+	maxFallSpeed = 8;
+	jumpSpeed = -15;
 	dx = 0;
 	dy = 0;
 	color.r = 255;
@@ -60,10 +60,10 @@ void Player::updateCamera(Camera *camera)
 		camera->box.x = 0;
 	if(camera->box.y < 0)
 		camera->box.y = 0;
-	if(camera->box.x + camera->box.w > camera->numLevelTiles * camera->tileSize)
-		camera->box.x = (camera->numLevelTiles * camera->tileSize) - camera->box.w;
-	if(camera->box.y + camera->box.h > camera->numLevelTiles * camera->tileSize)
-		camera->box.y = (camera->numLevelTiles * camera->tileSize) - camera->box.h;
+	if(camera->box.x + camera->box.w > camera->numLevelTilesWidth * camera->tileSize)
+		camera->box.x = (camera->numLevelTilesWidth * camera->tileSize) - camera->box.w;
+	if(camera->box.y + camera->box.h > camera->numLevelTilesHeight * camera->tileSize)
+		camera->box.y = (camera->numLevelTilesHeight * camera->tileSize) - camera->box.h;
 }
 
 
