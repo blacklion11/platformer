@@ -4,6 +4,8 @@ using namespace std;
 
 extern SDL_Surface *screen;
 extern SDL_Window *window;
+extern SDL_Renderer *renderer;
+SDL_Texture *mapText;
 
 //ctor
 Level::Level()
@@ -43,15 +45,16 @@ void Level::initLevel()
 			getline(file, line);
 			stringstream lineStream(line);
 			getline(lineStream, cblock, ' ');
-			std::string::size_type sz;  // alias of the size_t
+			int token;
+			sscanf(cblock.c_str(), "%d", &token);
 			
-			if(i == 0) width = (int)  std::atoi(cblock, &sz);
-			else height = std::atoi(cblock, &sz);
+			if(i == 0) width = token;
+			else height = token;
 		}
 		
 		file.close();
 		
-		SDL_Log("Width: %d   Height: %d", width, height);
+		//SDL_Log("Width: %d   Height: %d", width, height);
 	}
 	catch(ifstream::failure e)
 	{
@@ -110,6 +113,9 @@ void Level::loadBlocks()
 				//SDL_Log("Col: %d being read. Current Block: %d", counterX, token);
 				switch(token)  
 				{
+					
+					
+					
 					case BLOCK_AIR:
 						// Configure the block
 						blocks[counterY][counterX].id = 0;
@@ -142,6 +148,8 @@ void Level::loadBlocks()
 				}
 				//SDL_Log("Block Loaded: %d, %d", counterX, counterY);
 				
+				//Blit if blitting <----- for later use (not sure if going to implement or not
+				
 				counterX++;
 			}
 			counterY++;
@@ -151,6 +159,11 @@ void Level::loadBlocks()
 	{
 		SDL_Log("Error loading  file");
 	}
+
+
+	// Create texture for optimized rendering
+	//mapText = SDL_CreateTextureFromSurface(renderer, screen);
+	
 	
 	SDL_Log("Level Loaded");
 
@@ -302,17 +315,65 @@ void Level::updateLevel(Player *player)
 /**
 *	Render the level
 */
-void Level::renderLevel(SDL_Renderer *renderer, Camera *camera)
+void Level::renderLevel(SDL_Renderer *rend, Camera *camera)
 {
 	//SDL_Renderer *tileRend = SDL_CreateSoftwareRenderer(screen);
 	//SDL_Surface *crop = SDL_CreateRGBSurface(0, camera->box.w, camera->box.h, 32, 0, 0, 0, 0);
 	
 	// Render the level to "camera screen"
-	for(int i = 0; i < height; i++)
+	
+	
+	
+	int startTileX = camera->box.x / tileSize;
+	int startTileY = camera->box.y / tileSize;
+	int endTileX = startTileX + (camera->box.w / tileSize) + 1;
+	int endTileY = startTileY + (camera->box.h / tileSize) + 1;
+	if(startTileX < 0) startTileX = 0;
+	if(startTileY < 0) startTileY = 0;
+	if(endTileX > width) endTileX = width;
+	if(endTileY > height) endTileY = height;
+	
+	/*
+	SDL_Surface *test = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+	SDL_Texture *text = SDL_CreateTextureFromSurface(rend, test);
+	SDL_RenderCopy(rend, text, NULL, NULL); 
+	
+	SDL_FreeSurface(test);
+	SDL_DestroyTexture(text);
+	*/
+	
+	
+	for(int i = startTileY; i < endTileY; i++)
+	{
+		for(int j = startTileX; j < endTileX; j++)
+		{
+			SDL_SetRenderDrawColor(renderer, 
+								   blocks[i][j].color.r,
+								   blocks[i][j].color.g,
+								   blocks[i][j].color.b,
+								   blocks[i][j].color.a
+								  );
+			SDL_Rect offset;
+			offset.x = blocks[i][j].box.x - camera->box.x;
+			offset.y = blocks[i][j].box.y - camera->box.y;
+			offset.w = camera->box.w;
+			offset.h = camera->box.h;
+			SDL_RenderFillRect(renderer, &offset);
+		}
+	}
+	
+	
+	
+	/*
+	for(int i = 0; i < height;  i++)
 	{
 		for(int j = 0; j < width; j++)
 		{
 			
+			if(i < 0) i = 0;
+			if(i > height) i = height;
+			if(j < 0) j = 0;
+			if(j > width) j = width;
 			SDL_SetRenderDrawColor(renderer, 
 								   blocks[i][j].color.r,
 								   blocks[i][j].color.g,
@@ -329,6 +390,7 @@ void Level::renderLevel(SDL_Renderer *renderer, Camera *camera)
 			
 		}
 	}
+	*/
 }
 
 

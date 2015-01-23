@@ -19,6 +19,7 @@ struct Block: public GameObject
 	bool solid;
 	bool collidable;
 	SDL_Color color;
+	SDL_Texture *txtr;
 };
 
 class Level
