@@ -48,6 +48,7 @@ void Level::initLevel()
 			int token;
 			sscanf(cblock.c_str(), "%d", &token);
 			
+			// Sets the width and height of the level
 			if(i == 0) width = token;
 			else height = token;
 		}
@@ -77,7 +78,11 @@ void Level::initLevel()
 *	Load the blocks used in the level
 */
 void Level::loadBlocks()
-{	
+{
+	SDL_Surface *tempScreen = SDL_CreateRGBSurface(0, width * tileSize, height * tileSize, 32, 0, 0, 0, 0);
+	SDL_Renderer *tempRend = SDL_CreateSoftwareRenderer(tempScreen);
+
+
 	SDL_Log("Loading Blocks...");
 	//phys.gravity = 5.0f;
 	string line, cblock;  // string for reading in and storing the block ids
@@ -197,7 +202,7 @@ void Level::checkLeftCollisions(Player *player)
 	if(collision)
 	{
 		player->dx = 0;
-		player->tempX = blocks[testPos.y / tileSize][testPos.x / tileSize].box.x + blocks[testPos.y / tileSize][testPos.x / tileSize].box.w + 1; 
+		player->tempX = blocks[testPos.y / tileSize][testPos.x / tileSize].box.x + blocks[testPos.y / tileSize][testPos.x / tileSize].box.w + 0; 
 	}
 }
 
@@ -283,15 +288,23 @@ void Level::checkCollisions(Player *player)
 	{
 		checkLeftCollisions(player);
 	}
-	if(player->dx > 0)
+	else if(player->dx > 0)
 	{
 		checkRightCollisions(player);
 	}
+	
+	// If the player collided with a block then update the position
+	// before testing for vertical collisions
+	if(player->dx == 0)
+	{
+		player->applyMovement();
+	}
+	
 	if(player->dy < 0)
 	{
 		checkTopCollisions(player);
 	}
-	if(player->dy > 0)
+	else if(player->dy > 0)
 	{
 		checkBottomCollisions(player);
 		if(player->dy > player->maxFallSpeed)

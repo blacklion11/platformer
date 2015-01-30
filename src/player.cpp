@@ -18,7 +18,7 @@ void Player::initPlayer()
 {
 	box.x = 200;
 	box.y = 200;
-	box.w = box.h = 28;
+	box.w = box.h = 24;
 	movespeed = 4;
 	maxFallSpeed = 8;
 	jumpSpeed = -15;
