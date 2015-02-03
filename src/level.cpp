@@ -135,7 +135,7 @@ void Level::loadBlocks()
 						blocks[counterY][counterX].color.g = 255;
 						blocks[counterY][counterX].color.b = 255;
 						blocks[counterY][counterX].color.a = 255;
-						blocks[counterY][counterX].txtr = SDL_CreateTextureFromSurface(renderer, IMG_Load("air.png"));
+						blocks[counterY][counterX].txtr = SDL_CreateTextureFromSurface(tempRend, IMG_Load("air.png"));
 						break;
 					case BLOCK_DIRT:
 						blocks[counterY][counterX].id = 1;
@@ -150,12 +150,13 @@ void Level::loadBlocks()
 						blocks[counterY][counterX].color.g = 255;
 						blocks[counterY][counterX].color.b = 0;
 						blocks[counterY][counterX].color.a = 255;
-						blocks[counterY][counterX].txtr = SDL_CreateTextureFromSurface(renderer, IMG_Load("grass.png"));
+						blocks[counterY][counterX].txtr = SDL_CreateTextureFromSurface(tempRend, IMG_Load("grass.png"));
 						break;
 				}
 				//SDL_Log("Block Loaded: %d, %d", counterX, counterY);
 				
 				//Blit if blitting <----- for later use (not sure if going to implement or not
+				SDL_RenderCopy(tempRend, blocks[counterY][counterX].txtr, NULL, &(blocks[counterY][counterX].box));
 				
 				counterX++;
 			}
@@ -169,8 +170,10 @@ void Level::loadBlocks()
 
 
 	// Create texture for optimized rendering
-	//mapText = SDL_CreateTextureFromSurface(renderer, screen);
+	mapText = SDL_CreateTextureFromSurface(renderer, tempScreen);
 	
+	SDL_DestroyRenderer(tempRend);
+	SDL_FreeSurface(tempScreen);
 	
 	SDL_Log("Level Loaded");
 
@@ -357,6 +360,10 @@ void Level::renderLevel(SDL_Renderer *rend, Camera *camera)
 	SDL_DestroyTexture(text);
 	*/
 	
+	
+	SDL_RenderCopy(renderer, mapText, &(camera->box), NULL);
+	
+	/*
 	for(int i = startTileY; i < endTileY; i++)
 	{
 		for(int j = startTileX; j < endTileX; j++)
@@ -368,26 +375,6 @@ void Level::renderLevel(SDL_Renderer *rend, Camera *camera)
 			offset.h = camera->box.h;
 			SDL_RenderCopy(renderer, blocks[i][j].txtr, NULL, &offset);
 			//SDL_RenderFillRect(renderer, &offset);
-		}
-	}
-	
-	/*
-	for(int i = startTileY; i < endTileY; i++)
-	{
-		for(int j = startTileX; j < endTileX; j++)
-		{
-			SDL_SetRenderDrawColor(renderer, 
-								   blocks[i][j].color.r,
-								   blocks[i][j].color.g,
-								   blocks[i][j].color.b,
-								   blocks[i][j].color.a
-								  );
-			SDL_Rect offset;
-			offset.x = blocks[i][j].box.x - camera->box.x;
-			offset.y = blocks[i][j].box.y - camera->box.y;
-			offset.w = camera->box.w;
-			offset.h = camera->box.h;
-			SDL_RenderFillRect(renderer, &offset);
 		}
 	}
 	*/
